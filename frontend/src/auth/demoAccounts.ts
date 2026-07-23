@@ -1,6 +1,10 @@
 import type { AuthUser } from './auth-context'
 
+<<<<<<< HEAD
+export const demoPassword = 'password'
+=======
 export const demoPassword = 'siih2026'
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
 
 export const demoAccounts: Array<Omit<AuthUser, 'roleLabel' | 'permissions'>> = [
   { id: 'demo-reception', username: 'recepcion', displayName: 'Andrea Suárez', department: 'Admisión central', role: 'RECEPTION' },

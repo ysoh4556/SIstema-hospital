@@ -1,3 +1,14 @@
+<<<<<<< HEAD
+import { Download, RefreshCw, Search, X } from 'lucide-react'
+import { useCallback, useEffect, useState } from 'react'
+import { AdministrationView } from './AdministrationView'
+import { api, type BillingOverview, type InventoryOverview, type LaboratoryOverview, type PharmacyOverview, type ReportsOverview } from './api'
+import { OperationalActions } from './OperationalActions'
+
+export type OperationalModule = 'laboratorio' | 'farmacia' | 'inventario' | 'facturacion' | 'reportes' | 'administracion'
+
+type Overview = LaboratoryOverview | PharmacyOverview | InventoryOverview | BillingOverview | ReportsOverview
+=======
 import { Download, RefreshCw, Search } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
 import { api, type AdministrationOverview, type BillingOverview, type InventoryOverview, type LaboratoryOverview, type PharmacyOverview, type ReportsOverview } from './api'
@@ -5,6 +16,7 @@ import { api, type AdministrationOverview, type BillingOverview, type InventoryO
 export type OperationalModule = 'laboratorio' | 'farmacia' | 'inventario' | 'facturacion' | 'reportes' | 'administracion'
 
 type Overview = LaboratoryOverview | PharmacyOverview | InventoryOverview | BillingOverview | ReportsOverview | AdministrationOverview
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
 
 const moduleTitles: Record<OperationalModule, { title: string; description: string }> = {
   laboratorio: { title: 'Laboratorio', description: 'Órdenes, muestras y resultados disponibles para seguimiento.' },
@@ -16,6 +28,14 @@ const moduleTitles: Record<OperationalModule, { title: string; description: stri
 }
 
 export function OperationalView({ module, onNotify, canExport = false }: { module: OperationalModule; onNotify: (message: string) => void; canExport?: boolean }) {
+<<<<<<< HEAD
+  if (module === 'administracion') return <AdministrationView onNotify={onNotify} />
+  return <OperationalModuleView module={module} onNotify={onNotify} canExport={canExport} />
+}
+
+function OperationalModuleView({ module, onNotify, canExport }: { module: Exclude<OperationalModule, 'administracion'>; onNotify: (message: string) => void; canExport: boolean }) {
+=======
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
   const [data, setData] = useState<Overview | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -34,9 +54,13 @@ export function OperationalView({ module, onNotify, canExport = false }: { modul
             ? await api.getInventoryOverview()
             : module === 'facturacion'
               ? await api.getBillingOverview()
+<<<<<<< HEAD
+              : await api.getReportsOverview()
+=======
               : module === 'reportes'
                 ? await api.getReportsOverview()
                 : await api.getAdministrationOverview()
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
       setData(response)
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : 'No se pudo cargar el modulo.')
@@ -63,18 +87,31 @@ export function OperationalView({ module, onNotify, canExport = false }: { modul
       <div><span className="eyebrow">Módulo operativo</span><h1>{title.title}</h1><p>{title.description}</p></div>
       <div className="heading-actions">{canExport && <button type="button" className="button button-secondary" onClick={exportData} disabled={!data}><Download aria-hidden="true" /> Exportar CSV</button>}<button type="button" className="button button-primary" onClick={() => void refresh()} disabled={loading}><RefreshCw aria-hidden="true" /> {loading ? 'Actualizando...' : 'Actualizar'}</button></div>
     </section>
+<<<<<<< HEAD
+    {data && <div className="operation-toolbar"><label className="search-field"><Search aria-hidden="true" /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={`Buscar en ${title.title.toLowerCase()}`} aria-label={`Buscar en ${title.title.toLowerCase()}`} />{query && <button type="button" title="Limpiar búsqueda" aria-label="Limpiar búsqueda" onClick={() => setQuery('')}><X aria-hidden="true" /></button>}</label><span>{loading ? 'Sincronizando...' : 'Datos sincronizados con la API'}</span></div>}
+    <OperationalActions module={module} onChanged={load} onNotify={onNotify} />
+=======
     {data && <div className="operation-toolbar"><label className="search-field"><Search aria-hidden="true" /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={`Buscar en ${title.title.toLowerCase()}`} aria-label={`Buscar en ${title.title.toLowerCase()}`} />{query && <button type="button" aria-label="Limpiar búsqueda" onClick={() => setQuery('')}>×</button>}</label><span>{loading ? 'Sincronizando...' : 'Datos sincronizados con la API'}</span></div>}
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
     {loading && !data ? <section className="panel operation-loading">Consultando el backend...</section> : error ? <section className="panel operation-error"><strong>No se pudo cargar {title.title.toLowerCase()}</strong><span>{error}</span><button type="button" className="button button-secondary" onClick={() => void load()}>Reintentar</button></section> : data && <OperationContent module={module} data={data} query={query} />}
   </>
 }
 
+<<<<<<< HEAD
+function OperationContent({ module, data, query }: { module: Exclude<OperationalModule, 'administracion'>; data: Overview; query: string }) {
+=======
 function OperationContent({ module, data, query }: { module: OperationalModule; data: Overview; query: string }) {
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
   if (module === 'laboratorio') return <LaboratoryContent data={data as LaboratoryOverview} query={query} />
   if (module === 'farmacia') return <PharmacyContent data={data as PharmacyOverview} query={query} />
   if (module === 'inventario') return <InventoryContent data={data as InventoryOverview} query={query} />
   if (module === 'facturacion') return <BillingContent data={data as BillingOverview} query={query} />
+<<<<<<< HEAD
+  return <ReportsContent data={data as ReportsOverview} query={query} />
+=======
   if (module === 'reportes') return <ReportsContent data={data as ReportsOverview} query={query} />
   return <AdministrationContent data={data as AdministrationOverview} query={query} />
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
 }
 
 function SummaryCards({ items }: { items: Array<{ label: string; value: string | number }> }) {
@@ -131,6 +168,8 @@ function ReportsContent({ data, query }: { data: ReportsOverview; query: string 
   </>
 }
 
+<<<<<<< HEAD
+=======
 function AdministrationContent({ data, query }: { data: AdministrationOverview; query: string }) {
   const users = asArray(data.users).filter((item) => matchesQuery(query, item.username, item.displayName, item.email, item.status, item.roles))
   const audit = asArray(data.audit).filter((item) => matchesQuery(query, item.action, item.entityType, item.username))
@@ -141,6 +180,7 @@ function AdministrationContent({ data, query }: { data: AdministrationOverview; 
   </>
 }
 
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
 function PanelTitle({ title, meta }: { title: string; meta: string }) {
   return <div className="operation-panel-title"><div><h2>{title}</h2><span>{meta}</span></div></div>
 }
@@ -155,7 +195,11 @@ function matchesQuery(query: string, ...values: Array<string | number | null | u
   return values.some((value) => String(value ?? '').toLocaleLowerCase('es').includes(normalized))
 }
 
+<<<<<<< HEAD
+function downloadOverview(module: Exclude<OperationalModule, 'administracion'>, data: Overview) {
+=======
 function downloadOverview(module: OperationalModule, data: Overview) {
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
   const table = exportTable(module, data)
   const csv = [table.headers, ...table.rows].map((row) => row.map(csvCell).join(',')).join('\r\n')
   const blob = new Blob([`\uFEFF${csv}`], { type: 'text/csv;charset=utf-8' })
@@ -167,7 +211,11 @@ function downloadOverview(module: OperationalModule, data: Overview) {
   URL.revokeObjectURL(url)
 }
 
+<<<<<<< HEAD
+function exportTable(module: Exclude<OperationalModule, 'administracion'>, data: Overview): { headers: string[]; rows: Array<Array<string | number>> } {
+=======
 function exportTable(module: OperationalModule, data: Overview): { headers: string[]; rows: Array<Array<string | number>> } {
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
   if (module === 'laboratorio') {
     const overview = data as LaboratoryOverview
     return { headers: ['Orden', 'Paciente', 'Código paciente', 'Estado', 'Pruebas', 'Solicitada'], rows: asArray(overview.orders).map((item) => [fallback(item.orderCode), fallback(item.patientName), fallback(item.patientCode), humanize(item.status), item.testCount ?? 0, fallback(item.requestedAt)]) }
@@ -184,12 +232,17 @@ function exportTable(module: OperationalModule, data: Overview): { headers: stri
     const overview = data as BillingOverview
     return { headers: ['Factura', 'Paciente', 'Código paciente', 'Estado', 'Moneda', 'Total'], rows: asArray(overview.invoices).map((item) => [fallback(item.invoiceCode), fallback(item.patientName), fallback(item.patientCode), humanize(item.status), fallback(item.currency), item.total ?? 0]) }
   }
+<<<<<<< HEAD
+  const overview = data as ReportsOverview
+  return { headers: ['Especialidad', 'Citas'], rows: asArray(overview.appointmentsBySpecialty).map((item) => [fallback(item.specialty), item.count ?? 0]) }
+=======
   if (module === 'reportes') {
     const overview = data as ReportsOverview
     return { headers: ['Especialidad', 'Citas'], rows: asArray(overview.appointmentsBySpecialty).map((item) => [fallback(item.specialty), item.count ?? 0]) }
   }
   const overview = data as AdministrationOverview
   return { headers: ['Usuario', 'Nombre', 'Correo', 'Roles', 'Estado'], rows: asArray(overview.users).map((item) => [fallback(item.username), fallback(item.displayName), fallback(item.email), fallback(item.roles, 'Sin rol'), humanize(item.status)]) }
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
 }
 
 function csvCell(value: string | number) {

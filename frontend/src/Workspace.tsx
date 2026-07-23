@@ -1,9 +1,20 @@
+<<<<<<< HEAD
+import { Activity as ActivityIcon, AlertTriangle, Bell, CalendarDays, ChartNoAxesCombined, ChevronDown, ClipboardList, Download, FlaskConical, HeartPulse, Hospital, House, Info, LogOut, PackageSearch, Pencil, Pill, Plus, ReceiptText, RefreshCw, Search, Settings, Stethoscope, UserCheck, Users, X, type LucideIcon } from 'lucide-react'
+import { useCallback, useEffect, useMemo, useState, type FormEvent, type ReactNode } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import { api, type Appointment as ApiAppointment, type AppointmentStatus, type BillingOverview, type ClinicalHistory, type Consultation, type InventoryOverview, type LaboratoryOverview, type Patient as ApiPatient, type PatientCreateRequest, type PatientUpdateRequest, type PharmacyOverview, type Professional, type ReportsOverview, type Specialty } from './api'
+import type { Notification as ApiNotification } from './api'
+import { useAuth } from './auth/auth-context'
+import { isViewKey, PERMISSIONS, viewPermissions, type ViewKey } from './auth/permissions'
+import { ClinicalOperationsView } from './ClinicalOperationsView'
+=======
 import { Activity as ActivityIcon, AlertTriangle, Bell, CalendarDays, ChartNoAxesCombined, ChevronDown, ClipboardList, Download, FlaskConical, HeartPulse, Hospital, House, Info, LogOut, PackageSearch, Pill, Plus, ReceiptText, Search, Settings, Stethoscope, Users, type LucideIcon } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useState, type FormEvent, type ReactNode } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { api, type Appointment as ApiAppointment, type AppointmentStatus, type BillingOverview, type ClinicalHistory, type Consultation, type InventoryOverview, type LaboratoryOverview, type Patient as ApiPatient, type PatientCreateRequest, type PatientUpdateRequest, type PharmacyOverview, type Professional, type ReportsOverview, type Specialty } from './api'
 import { useAuth } from './auth/auth-context'
 import { isViewKey, PERMISSIONS, viewPermissions, type ViewKey } from './auth/permissions'
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
 import { OperationalView, type OperationalModule } from './OperationalView'
 import './App.css'
 
@@ -102,6 +113,11 @@ function Workspace() {
   const [dashboardData, setDashboardData] = useState<DashboardData>(emptyDashboardData)
   const [loadingDashboard, setLoadingDashboard] = useState(true)
   const [showUserMenu, setShowUserMenu] = useState(false)
+<<<<<<< HEAD
+  const [showNotifications, setShowNotifications] = useState(false)
+  const [notifications, setNotifications] = useState<ApiNotification[]>([])
+=======
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
   const [backendStatus, setBackendStatus] = useState<'loading' | 'online' | 'offline'>('loading')
 
   const canReadPatients = hasPermission(PERMISSIONS.PATIENT_READ)
@@ -109,6 +125,11 @@ function Workspace() {
   const canWritePatients = hasPermission(PERMISSIONS.PATIENT_WRITE)
   const canWriteAppointments = hasPermission(PERMISSIONS.APPOINTMENT_WRITE)
   const canWriteClinical = hasPermission(PERMISSIONS.CLINICAL_WRITE)
+<<<<<<< HEAD
+  const canWriteTriage = hasPermission(PERMISSIONS.TRIAGE_WRITE)
+  const canWriteHospitalization = hasPermission(PERMISSIONS.HOSPITALIZATION_WRITE)
+=======
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
   const visibleNavigation = useMemo(() => navigation.filter((item) => hasPermission(viewPermissions[item.key])), [hasPermission])
   const visibleManagementNavigation = useMemo(() => managementNavigation.filter((item) => hasPermission(viewPermissions[item.key])), [hasPermission])
 
@@ -129,6 +150,22 @@ function Workspace() {
     window.setTimeout(() => setToast(''), 2800)
   }, [])
 
+<<<<<<< HEAD
+  const loadNotifications = useCallback(async () => {
+    try { setNotifications(await api.getNotifications()) } catch { setNotifications([]) }
+  }, [])
+
+  useEffect(() => { void loadNotifications() }, [loadNotifications])
+
+  const readNotification = async (id: string) => {
+    try {
+      const updated = await api.markNotificationRead(id)
+      setNotifications((current) => current.map((item) => item.id === id ? updated : item))
+    } catch (reason) { notify(getErrorMessage(reason)) }
+  }
+
+=======
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
   const loadPatients = useCallback(async (term: string, page: number) => {
     if (!canReadPatients) {
       setLoadingPatients(false)
@@ -250,6 +287,8 @@ function Workspace() {
   const createPatient = async (payload: PatientCreateRequest) => {
     if (!canWritePatients) return
     try {
+<<<<<<< HEAD
+=======
       const duplicates = await api.findPatientDuplicates({
         documentNumber: payload.documentNumber,
         firstName: payload.firstName,
@@ -259,6 +298,7 @@ function Workspace() {
       if (duplicates.length > 0 && !window.confirm(`Se encontraron ${duplicates.length} posibles duplicados. ¿Deseas registrar el paciente de todas formas?`)) {
         return
       }
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
       const created = await api.createPatient(payload)
       setShowPatientModal(false)
       setSearch('')
@@ -348,10 +388,14 @@ function Workspace() {
           ))}
         </nav>
 
+<<<<<<< HEAD
+        <div className="sidebar-footer"><div className={`system-status ${backendStatus === 'offline' ? 'system-status-offline' : ''}`}><span></span>{backendStatus === 'loading' ? 'Conectando con el backend...' : backendStatus === 'online' ? 'Backend conectado' : 'Backend no disponible'}</div></div>
+=======
         <div className="sidebar-footer">
           <button className="support-card" type="button" onClick={() => notify('Solicitud de soporte registrada para esta sesión')}><span className="support-icon">?</span><span><strong>¿Necesitas ayuda?</strong><small>Contactar a soporte TI</small></span><span className="arrow">↗</span></button>
           <div className={`system-status ${backendStatus === 'offline' ? 'system-status-offline' : ''}`}><span></span>{backendStatus === 'loading' ? 'Conectando con el backend...' : backendStatus === 'online' ? 'Backend conectado' : 'Backend no disponible'}</div>
         </div>
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
       </aside>
 
       <main className="main-area">
@@ -359,12 +403,23 @@ function Workspace() {
           <div className="breadcrumb"><span>SIIH</span><span>/</span><strong>{currentTitle}</strong></div>
           <div className="topbar-actions">
             <div className="topbar-date"><span className="date-dot"></span>{todayLabel}</div>
+<<<<<<< HEAD
+            <div className="notification-wrap">
+              <button className="icon-button notification-button" type="button" aria-label="Ver notificaciones" title="Notificaciones" aria-expanded={showNotifications} onClick={() => setShowNotifications((current) => !current)}><Icon symbol={Bell} />{notifications.some((item) => !item.readAt) && <span className="notification-dot" />}</button>
+              {showNotifications && <div className="notification-dropdown"><div className="notification-heading"><strong>Notificaciones</strong><button type="button" onClick={() => void loadNotifications()}><RefreshCw aria-hidden="true" /></button></div><div className="notification-list">{notifications.length === 0 ? <span className="notification-empty">No tienes notificaciones.</span> : notifications.slice(0, 8).map((item) => <button type="button" className={item.readAt ? 'notification-item notification-read' : 'notification-item'} key={item.id} onClick={() => void readNotification(item.id)}><i /><span><strong>{item.message}</strong><small>{formatShortDateTime(item.createdAt)}</small></span></button>)}</div></div>}
+            </div>
+=======
             <button className="icon-button notification-button" type="button" aria-label="Ver notificaciones" title="Notificaciones" onClick={() => notify('No tienes notificaciones nuevas')}><Icon symbol={Bell} /></button>
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
             <div className="user-menu-wrap">
               <button className="user-menu" type="button" aria-expanded={showUserMenu} onClick={() => setShowUserMenu((current) => !current)}>
                 <div className="avatar avatar-navy">{initials(user.displayName)}</div><div className="user-copy"><strong>{user.displayName}</strong><span>{user.roleLabel}</span></div><ChevronDown className="chevron" aria-hidden="true" />
               </button>
+<<<<<<< HEAD
+              {showUserMenu && <div className="user-dropdown"><div><strong>{user.department}</strong><span>@{user.username}</span></div><button type="button" onClick={() => { void logout().finally(() => navigate('/')) }}><LogOut aria-hidden="true" /> Cerrar sesión</button></div>}
+=======
               {showUserMenu && <div className="user-dropdown"><div><strong>{user.department}</strong><span>@{user.username}</span></div><button type="button" onClick={() => { logout(); navigate('/') }}><LogOut aria-hidden="true" /> Cerrar sesión</button></div>}
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
             </div>
           </div>
         </header>
@@ -373,10 +428,17 @@ function Workspace() {
           {error && <div className="connection-banner" role="alert"><strong>Backend:</strong> {error}<button type="button" onClick={() => { void loadPatients(search, patientPage); void loadAppointments(agendaFilters); void loadDashboard() }}>Reintentar</button></div>}
           {activeView === 'inicio' && <Dashboard userName={firstName(user.displayName)} appointments={appointments} patientTotal={patientTotal} waitingAppointments={waitingAppointments} completedAppointments={completedAppointments} data={dashboardData} loading={loadingAppointments || loadingDashboard} canCreateAppointment={canWriteAppointments} canExport={hasPermission(PERMISSIONS.REPORT_EXPORT)} onMarkArrival={markArrival} onNewAppointment={() => setShowAppointmentModal(true)} onExport={() => { exportDashboardSummary(dashboardData, appointments, patientTotal); notify('Resumen exportado en formato CSV') }} onGoTo={setActiveView} />}
           {activeView === 'pacientes' && <PatientsView patients={patients} search={search} page={patientPage} totalPages={patientPages} totalElements={patientTotal} loading={loadingPatients} canWrite={canWritePatients} onSearchChange={(value) => { setSearch(value); setPatientPage(0) }} onPageChange={setPatientPage} onNewPatient={() => setShowPatientModal(true)} onEditPatient={editPatient} />}
+<<<<<<< HEAD
+          {activeView === 'agenda' && <AgendaView appointments={appointments} selectedDate={agendaDate} loading={loadingAppointments} canWrite={canWriteAppointments} onDateChange={(offset) => setAgendaDate((current) => addDays(current, offset))} onMarkArrival={markArrival} onCancel={async (id, reason) => { try { await api.cancelAppointment(id, reason); notify('Cita cancelada correctamente'); await loadAppointments(agendaFilters); return true } catch (failure) { notify(getErrorMessage(failure)); return false } }} onNewAppointment={() => setShowAppointmentModal(true)} />}
+          {activeView === 'historia' && <ClinicalHistoryView patients={patients} professionals={professionals} appointments={appointments} selectedPatientId={historyPatientId} canWrite={canWriteClinical} onPatientChange={setHistoryPatientId} onNotify={notify} />}
+          {activeView === 'triaje' && <ClinicalOperationsView module="triaje" canWrite={canWriteTriage} onNotify={notify} />}
+          {activeView === 'hospitalizacion' && <ClinicalOperationsView module="hospitalizacion" canWrite={canWriteHospitalization} onNotify={notify} />}
+=======
           {activeView === 'agenda' && <AgendaView appointments={appointments} selectedDate={agendaDate} loading={loadingAppointments} canWrite={canWriteAppointments} onDateChange={(offset) => setAgendaDate((current) => addDays(current, offset))} onMarkArrival={markArrival} onCancel={async (id, reason) => { try { await api.cancelAppointment(id, reason); notify('Cita cancelada correctamente'); await loadAppointments(agendaFilters) } catch (failure) { notify(getErrorMessage(failure)) } }} onNewAppointment={() => setShowAppointmentModal(true)} />}
           {activeView === 'historia' && <ClinicalHistoryView patients={patients} professionals={professionals} appointments={appointments} selectedPatientId={historyPatientId} canWrite={canWriteClinical} onPatientChange={setHistoryPatientId} onNotify={notify} />}
           {activeView === 'triaje' && <PendingIntegrationView module="Triaje" icon={ActivityIcon} description="El registro de prioridad y signos vitales requiere los endpoints de triaje definidos en el contrato del SIIH." />}
           {activeView === 'hospitalizacion' && <PendingIntegrationView module="Hospitalización" icon={Hospital} description="Ingresos, camas, seguimiento y altas están documentados, pero todavía no cuentan con API en el backend actual." />}
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
           {isOperationalModule(activeView) && <OperationalView module={activeView} onNotify={notify} canExport={hasPermission(PERMISSIONS.REPORT_EXPORT)} />}
         </div>
       </main>
@@ -476,6 +538,11 @@ function Alert({ tone, title, description, action, onAction }: { tone: string; t
   return <div className="alert-item"><div className={`alert-icon alert-${tone}`}><AlertIcon aria-hidden="true" /></div><div className="alert-copy"><strong>{title}</strong><span>{description}</span><button type="button" className="text-button" onClick={onAction}>{action} <span>→</span></button></div></div>
 }
 
+<<<<<<< HEAD
+function AppointmentTableRow({ appointment, canWrite, onMarkArrival }: { appointment: Appointment; canWrite: boolean; onMarkArrival: (id: string) => Promise<void> }) {
+  const canRegisterArrival = canWrite && ['SCHEDULED', 'CONFIRMED'].includes(appointment.rawStatus)
+  return <tr><td className="time-cell">{appointment.time}</td><td><div className="person-cell"><div className={`avatar avatar-${appointment.tone}`}>{appointment.initials}</div><div><strong>{appointment.patient}</strong><span>{appointment.appointmentCode}</span></div></div></td><td>{appointment.specialty}</td><td>{appointment.doctor}</td><td><StatusPill tone={appointment.tone} label={appointment.status} /></td><td>{canRegisterArrival && <button className="row-action" type="button" title="Registrar llegada" aria-label={`Registrar llegada de ${appointment.patient}`} onClick={() => void onMarkArrival(appointment.id)}><UserCheck aria-hidden="true" /></button>}</td></tr>
+=======
 function PendingIntegrationView({ module, icon: ModuleIcon, description }: { module: string; icon: LucideIcon; description: string }) {
   return <>
     <section className="page-heading compact-heading"><div><span className="eyebrow">Continuidad asistencial</span><h1>{module}</h1><p>{description}</p></div><span className="integration-badge">API pendiente</span></section>
@@ -486,6 +553,7 @@ function PendingIntegrationView({ module, icon: ModuleIcon, description }: { mod
 function AppointmentTableRow({ appointment, canWrite, onMarkArrival }: { appointment: Appointment; canWrite: boolean; onMarkArrival: (id: string) => Promise<void> }) {
   const canRegisterArrival = canWrite && ['SCHEDULED', 'CONFIRMED'].includes(appointment.rawStatus)
   return <tr><td className="time-cell">{appointment.time}</td><td><div className="person-cell"><div className={`avatar avatar-${appointment.tone}`}>{appointment.initials}</div><div><strong>{appointment.patient}</strong><span>{appointment.appointmentCode}</span></div></div></td><td>{appointment.specialty}</td><td>{appointment.doctor}</td><td><StatusPill tone={appointment.tone} label={appointment.status} /></td><td>{canRegisterArrival && <button className="row-action" type="button" title="Registrar llegada" aria-label={`Registrar llegada de ${appointment.patient}`} onClick={() => void onMarkArrival(appointment.id)}>•••</button>}</td></tr>
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
 }
 
 function PatientsView({ patients, search, page, totalPages, totalElements, loading, canWrite, onSearchChange, onPageChange, onNewPatient, onEditPatient }: { patients: Patient[]; search: string; page: number; totalPages: number; totalElements: number; loading: boolean; canWrite: boolean; onSearchChange: (value: string) => void; onPageChange: (page: number) => void; onNewPatient: () => void; onEditPatient: (id: string) => Promise<void> }) {
@@ -495,15 +563,26 @@ function PatientsView({ patients, search, page, totalPages, totalElements, loadi
       {canWrite && <button className="button button-primary" type="button" onClick={onNewPatient}><Icon symbol={Plus} /> Registrar paciente</button>}
     </section>
     <section className="panel directory-panel">
+<<<<<<< HEAD
+      <div className="directory-toolbar"><div className="search-field large-search"><Icon symbol={Search} /><input value={search} onChange={(event) => onSearchChange(event.target.value)} placeholder="Buscar por nombre, documento o código" aria-label="Buscar pacientes" />{search && <button type="button" aria-label="Limpiar búsqueda" title="Limpiar búsqueda" onClick={() => onSearchChange('')}><X aria-hidden="true" /></button>}</div></div>
+      <div className="table-wrap"><table><thead><tr><th>Paciente</th><th>Documento</th><th>Edad</th><th>Última atención</th><th>Servicio</th><th>Estado</th><th></th></tr></thead><tbody>{loading ? <LoadingRow colSpan={7} /> : patients.length === 0 ? <EmptyRow colSpan={7} text="No encontramos pacientes en el backend." /> : patients.map((patient) => <tr key={patient.id}><td><div className="person-cell"><div className="avatar avatar-soft">{initials(patient.name)}</div><div><strong>{patient.name}</strong><span>{patient.code}</span></div></div></td><td>{patient.document}</td><td>{patient.age} años</td><td>{patient.lastVisit}</td><td>{patient.service}</td><td><StatusPill tone={patient.tone} label={patient.status} /></td><td>{canWrite && <button className="row-action" type="button" title="Editar ficha" aria-label={`Editar ficha de ${patient.name}`} onClick={() => void onEditPatient(patient.id)}><Pencil aria-hidden="true" /></button>}</td></tr>)}</tbody></table></div>
+=======
       <div className="directory-toolbar"><div className="search-field large-search"><Icon symbol={Search} /><input value={search} onChange={(event) => onSearchChange(event.target.value)} placeholder="Buscar por nombre, documento o código" aria-label="Buscar pacientes" />{search && <button type="button" aria-label="Limpiar búsqueda" title="Limpiar búsqueda" onClick={() => onSearchChange('')}>×</button>}</div></div>
       <div className="table-wrap"><table><thead><tr><th>Paciente</th><th>Documento</th><th>Edad</th><th>Última atención</th><th>Servicio</th><th>Estado</th><th></th></tr></thead><tbody>{loading ? <LoadingRow colSpan={7} /> : patients.length === 0 ? <EmptyRow colSpan={7} text="No encontramos pacientes en el backend." /> : patients.map((patient) => <tr key={patient.id}><td><div className="person-cell"><div className="avatar avatar-soft">{initials(patient.name)}</div><div><strong>{patient.name}</strong><span>{patient.code}</span></div></div></td><td>{patient.document}</td><td>{patient.age} años</td><td>{patient.lastVisit}</td><td>{patient.service}</td><td><StatusPill tone={patient.tone} label={patient.status} /></td><td>{canWrite && <button className="row-action" type="button" title="Editar ficha" aria-label={`Editar ficha de ${patient.name}`} onClick={() => void onEditPatient(patient.id)}>•••</button>}</td></tr>)}</tbody></table></div>
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
       <div className="panel-footer"><span>Mostrando {patients.length} de {totalElements} pacientes</span><div className="pagination"><button type="button" aria-label="Página anterior" disabled={page === 0 || loading} onClick={() => onPageChange(page - 1)}>←</button><span>{totalPages === 0 ? '0 / 0' : `${page + 1} / ${totalPages}`}</span><button type="button" aria-label="Página siguiente" disabled={loading || totalPages === 0 || page >= totalPages - 1} onClick={() => onPageChange(page + 1)}>→</button></div></div>
     </section>
   </>
 }
 
+<<<<<<< HEAD
+function AgendaView({ appointments, selectedDate, loading, canWrite, onDateChange, onMarkArrival, onCancel, onNewAppointment }: { appointments: Appointment[]; selectedDate: Date; loading: boolean; canWrite: boolean; onDateChange: (offset: number) => void; onMarkArrival: (id: string) => Promise<void>; onCancel: (id: string, reason: string) => Promise<boolean>; onNewAppointment: () => void }) {
+  const [filter, setFilter] = useState<'all' | 'pending' | 'completed'>('all')
+  const [appointmentToCancel, setAppointmentToCancel] = useState<Appointment | null>(null)
+=======
 function AgendaView({ appointments, selectedDate, loading, canWrite, onDateChange, onMarkArrival, onCancel, onNewAppointment }: { appointments: Appointment[]; selectedDate: Date; loading: boolean; canWrite: boolean; onDateChange: (offset: number) => void; onMarkArrival: (id: string) => Promise<void>; onCancel: (id: string, reason: string) => Promise<void>; onNewAppointment: () => void }) {
   const [filter, setFilter] = useState<'all' | 'pending' | 'completed'>('all')
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
   const visibleAppointments = appointments.filter((appointment) => filter === 'all'
     || (filter === 'pending' && appointment.status !== 'Atendida' && appointment.status !== 'Cancelada')
     || (filter === 'completed' && appointment.status === 'Atendida'))
@@ -516,11 +595,32 @@ function AgendaView({ appointments, selectedDate, loading, canWrite, onDateChang
     <section className="panel agenda-panel"><PanelHeader title="Citas cargadas" meta="Ordenadas por hora"><div className="segmented-control"><button className={filter === 'all' ? 'selected' : ''} type="button" onClick={() => setFilter('all')}>Todas</button><button className={filter === 'pending' ? 'selected' : ''} type="button" onClick={() => setFilter('pending')}>Pendientes</button><button className={filter === 'completed' ? 'selected' : ''} type="button" onClick={() => setFilter('completed')}>Atendidas</button></div></PanelHeader><div className="agenda-list">{loading ? <div className="empty-state"><strong>Cargando agenda...</strong></div> : visibleAppointments.length === 0 ? <div className="empty-state"><strong>No hay citas para mostrar</strong><span>Las citas creadas en el backend aparecerán aquí.</span></div> : visibleAppointments.map((appointment) => {
       const mayArrive = canWrite && ['SCHEDULED', 'CONFIRMED'].includes(appointment.rawStatus)
       const mayCancel = canWrite && ['SCHEDULED', 'CONFIRMED', 'ARRIVED', 'IN_PROGRESS'].includes(appointment.rawStatus)
+<<<<<<< HEAD
+      return <div className="agenda-row" key={appointment.id}><div className="agenda-time">{appointment.time}<span>30 min</span></div><div className="agenda-line"></div><div className={`avatar avatar-${appointment.tone}`}>{appointment.initials}</div><div className="agenda-patient"><strong>{appointment.patient}</strong><span>{appointment.specialty} · {appointment.doctor}</span></div><StatusPill tone={appointment.tone} label={appointment.status} />{(mayArrive || mayCancel) && <div className="agenda-actions">{mayArrive && <button type="button" className="button button-small button-secondary" onClick={() => void onMarkArrival(appointment.id)}>Registrar llegada</button>}{mayCancel && <button type="button" className="button button-small button-danger" onClick={() => setAppointmentToCancel(appointment)}>Cancelar</button>}</div>}</div>
+    })}</div></section>
+    {appointmentToCancel && <AppointmentCancelModal appointment={appointmentToCancel} onClose={() => setAppointmentToCancel(null)} onConfirm={async (reason) => { const cancelled = await onCancel(appointmentToCancel.id, reason); if (cancelled) setAppointmentToCancel(null) }} />}
+  </>
+}
+
+function AppointmentCancelModal({ appointment, onClose, onConfirm }: { appointment: Appointment; onClose: () => void; onConfirm: (reason: string) => Promise<void> }) {
+  const [reason, setReason] = useState('')
+  const [saving, setSaving] = useState(false)
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    if (!reason.trim()) return
+    setSaving(true)
+    try { await onConfirm(reason.trim()) } finally { setSaving(false) }
+  }
+  return <div className="modal-backdrop" role="presentation" onMouseDown={onClose}><form className="modal" role="dialog" aria-modal="true" aria-labelledby="cancel-appointment-title" onMouseDown={(event) => event.stopPropagation()} onSubmit={(event) => void submit(event)}><div className="modal-header"><div><span className="eyebrow">{appointment.appointmentCode}</span><h2 id="cancel-appointment-title">Cancelar cita</h2></div><button type="button" className="close-button" title="Cerrar" aria-label="Cerrar" onClick={onClose}><X aria-hidden="true" /></button></div><div className="cancel-appointment-copy"><strong>{appointment.patient}</strong><span>{appointment.date} a las {appointment.time} · {appointment.specialty}</span><p>La cancelación quedará registrada en la auditoría y no elimina la cita.</p></div><div className="form-grid single-column"><label>Motivo de cancelación<textarea autoFocus required minLength={3} value={reason} onChange={(event) => setReason(event.target.value)} placeholder="Describe el motivo para conservar la trazabilidad" /></label></div><div className="modal-footer"><button type="button" className="button button-secondary" disabled={saving} onClick={onClose}>Volver</button><button type="submit" className="button button-danger" disabled={saving || reason.trim().length < 3}>{saving ? 'Cancelando...' : 'Confirmar cancelación'}</button></div></form></div>
+}
+
+=======
       return <div className="agenda-row" key={appointment.id}><div className="agenda-time">{appointment.time}<span>30 min</span></div><div className="agenda-line"></div><div className={`avatar avatar-${appointment.tone}`}>{appointment.initials}</div><div className="agenda-patient"><strong>{appointment.patient}</strong><span>{appointment.specialty} · {appointment.doctor}</span></div><StatusPill tone={appointment.tone} label={appointment.status} />{(mayArrive || mayCancel) && <div className="agenda-actions">{mayArrive && <button type="button" className="button button-small button-secondary" onClick={() => void onMarkArrival(appointment.id)}>Registrar llegada</button>}{mayCancel && <button type="button" className="button button-small button-danger" onClick={() => { const reason = window.prompt('Motivo de cancelación'); if (reason?.trim()) void onCancel(appointment.id, reason.trim()) }}>Cancelar</button>}</div>}</div>
     })}</div></section>
   </>
 }
 
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
 type HistoryFields = Pick<ClinicalHistory, 'background' | 'allergies' | 'familyHistory' | 'surgicalHistory' | 'relevantNotes'>
 
 function ClinicalHistoryView({ patients, professionals, appointments, selectedPatientId, canWrite, onPatientChange, onNotify }: { patients: Patient[]; professionals: Professional[]; appointments: Appointment[]; selectedPatientId: string; canWrite: boolean; onPatientChange: (id: string) => void; onNotify: (message: string) => void }) {
@@ -645,7 +745,11 @@ function ClinicalHistoryView({ patients, professionals, appointments, selectedPa
           <PanelHeader title="Consultas" meta={`${consultations.length} registros`}>{canWrite && <button type="button" className="button button-secondary" disabled={!professionals.length} onClick={() => setShowConsultationForm((current) => !current)}><Icon symbol={Plus} /> Nueva consulta</button>}</PanelHeader>
           {showConsultationForm && canWrite && <form className="consultation-form" onSubmit={(event) => void createConsultation(event)}><label>Profesional<select value={professionalId} onChange={(event) => setProfessionalId(event.target.value)}>{professionals.map((professional) => <option value={professional.id} key={professional.id}>{professional.displayName}</option>)}</select></label><label>Cita relacionada<select value={appointmentId} onChange={(event) => setAppointmentId(event.target.value)}><option value="">Sin cita</option>{patientAppointments.map((appointment) => <option value={appointment.id} key={appointment.id}>{appointment.appointmentCode} · {appointment.time}</option>)}</select></label><label className="form-span-two">Motivo de consulta<input required value={chiefComplaint} onChange={(event) => setChiefComplaint(event.target.value)} /></label><label className="form-span-two">Evolución<textarea value={evolution} onChange={(event) => setEvolution(event.target.value)} /></label><label className="form-span-two">Recomendaciones<textarea value={recommendations} onChange={(event) => setRecommendations(event.target.value)} /></label><div className="form-actions form-span-two"><button type="submit" className="button button-primary" disabled={creatingConsultation}>{creatingConsultation ? 'Iniciando...' : 'Iniciar consulta'}</button></div></form>}
           {!loading && consultations.length === 0 ? <div className="empty-state"><strong>No hay consultas registradas</strong><span>Las consultas creadas aparecerán aquí.</span></div> : <div className="consultation-list">{consultations.map((consultation) => <article className="consultation-item" key={consultation.id}><div><button type="button" className="consultation-link" onClick={() => void openConsultationDetail(consultation.id)}>{consultation.consultationCode}</button><span>{formatShortDateTime(consultation.createdAt)} · {consultation.chiefComplaint}</span></div><StatusPill tone={consultation.status === 'CLOSED' ? 'green' : 'amber'} label={consultation.status === 'CLOSED' ? 'Cerrada' : consultation.status === 'DRAFT' ? 'Borrador' : consultation.status} />{canWrite && consultation.status === 'DRAFT' && <button type="button" className="button button-small button-secondary" onClick={() => setConsultationToClose(consultation)}>Cerrar consulta</button>}</article>)}</div>}
+<<<<<<< HEAD
+          {consultationDetail && <div className="consultation-detail"><div><strong>Detalle {consultationDetail.consultationCode}</strong><button type="button" className="close-button" title="Cerrar detalle" aria-label="Cerrar detalle" onClick={() => setConsultationDetail(null)}><X aria-hidden="true" /></button></div><p><b>Motivo:</b> {consultationDetail.chiefComplaint}</p><p><b>Evolución:</b> {consultationDetail.evolution || 'Sin registrar'}</p><p><b>Diagnóstico:</b> {consultationDetail.diagnosisSummary || 'Pendiente de cierre'}</p><p><b>Tratamiento:</b> {consultationDetail.treatmentPlan || 'Pendiente de cierre'}</p></div>}
+=======
           {consultationDetail && <div className="consultation-detail"><div><strong>Detalle {consultationDetail.consultationCode}</strong><button type="button" className="close-button" aria-label="Cerrar detalle" onClick={() => setConsultationDetail(null)}>×</button></div><p><b>Motivo:</b> {consultationDetail.chiefComplaint}</p><p><b>Evolución:</b> {consultationDetail.evolution || 'Sin registrar'}</p><p><b>Diagnóstico:</b> {consultationDetail.diagnosisSummary || 'Pendiente de cierre'}</p><p><b>Tratamiento:</b> {consultationDetail.treatmentPlan || 'Pendiente de cierre'}</p></div>}
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
         </section>
       </section>
     </>}
@@ -662,23 +766,57 @@ function PatientEditModal({ patient, onClose, onSave }: { patient: ApiPatient; o
     setSaving(true)
     try { await onSave(patient.id, form) } finally { setSaving(false) }
   }
+<<<<<<< HEAD
+  return <div className="modal-backdrop" role="presentation" onMouseDown={onClose}><form className="modal" role="dialog" aria-modal="true" aria-labelledby="edit-patient-title" onMouseDown={(event) => event.stopPropagation()} onSubmit={(event) => void submit(event)}><div className="modal-header"><div><span className="eyebrow">Ficha {patient.patientCode}</span><h2 id="edit-patient-title">Editar paciente</h2></div><button type="button" className="close-button" title="Cerrar" aria-label="Cerrar" onClick={onClose}><X aria-hidden="true" /></button></div><div className="form-grid"><label>Primer nombre<input required value={form.firstName} onChange={(event) => update('firstName', event.target.value)} /></label><label>Apellido<input required value={form.lastName} onChange={(event) => update('lastName', event.target.value)} /></label><label>Fecha de nacimiento<input required type="date" value={form.birthDate} onChange={(event) => update('birthDate', event.target.value)} /></label><label>Sexo<select value={form.sex} onChange={(event) => update('sex', event.target.value as PatientUpdateRequest['sex'])}><option value="NOT_DECLARED">No declarado</option><option value="FEMALE">Femenino</option><option value="MALE">Masculino</option><option value="INTERSEX">Intersexual</option><option value="UNKNOWN">Desconocido</option></select></label><label>Estado<select value={form.status} onChange={(event) => update('status', event.target.value as PatientUpdateRequest['status'])}><option value="ACTIVE">Activo</option><option value="INACTIVE">Inactivo</option><option value="DECEASED">Fallecido</option></select></label><label>Teléfono<input value={form.phone ?? ''} onChange={(event) => update('phone', event.target.value)} /></label><label>Correo electrónico<input type="email" value={form.email ?? ''} onChange={(event) => update('email', event.target.value)} /></label><label>Dirección<input value={form.address ?? ''} onChange={(event) => update('address', event.target.value)} /></label></div><div className="modal-footer"><button type="button" className="button button-secondary" onClick={onClose}>Cancelar</button><button type="submit" className="button button-primary" disabled={saving}>{saving ? 'Guardando...' : 'Guardar cambios'}</button></div></form></div>
+=======
   return <div className="modal-backdrop" role="presentation" onMouseDown={onClose}><form className="modal" role="dialog" aria-modal="true" aria-labelledby="edit-patient-title" onMouseDown={(event) => event.stopPropagation()} onSubmit={(event) => void submit(event)}><div className="modal-header"><div><span className="eyebrow">Ficha {patient.patientCode}</span><h2 id="edit-patient-title">Editar paciente</h2></div><button type="button" className="close-button" aria-label="Cerrar" onClick={onClose}>×</button></div><div className="form-grid"><label>Primer nombre<input required value={form.firstName} onChange={(event) => update('firstName', event.target.value)} /></label><label>Apellido<input required value={form.lastName} onChange={(event) => update('lastName', event.target.value)} /></label><label>Fecha de nacimiento<input required type="date" value={form.birthDate} onChange={(event) => update('birthDate', event.target.value)} /></label><label>Sexo<select value={form.sex} onChange={(event) => update('sex', event.target.value as PatientUpdateRequest['sex'])}><option value="NOT_DECLARED">No declarado</option><option value="FEMALE">Femenino</option><option value="MALE">Masculino</option><option value="INTERSEX">Intersexual</option><option value="UNKNOWN">Desconocido</option></select></label><label>Estado<select value={form.status} onChange={(event) => update('status', event.target.value as PatientUpdateRequest['status'])}><option value="ACTIVE">Activo</option><option value="INACTIVE">Inactivo</option><option value="DECEASED">Fallecido</option></select></label><label>Teléfono<input value={form.phone ?? ''} onChange={(event) => update('phone', event.target.value)} /></label><label>Correo electrónico<input type="email" value={form.email ?? ''} onChange={(event) => update('email', event.target.value)} /></label><label>Dirección<input value={form.address ?? ''} onChange={(event) => update('address', event.target.value)} /></label></div><div className="modal-footer"><button type="button" className="button button-secondary" onClick={onClose}>Cancelar</button><button type="submit" className="button button-primary" disabled={saving}>{saving ? 'Guardando...' : 'Guardar cambios'}</button></div></form></div>
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
 }
 
 function ConsultationCloseModal({ consultation, onClose, onSave }: { consultation: Consultation; onClose: () => void; onSave: (id: string, payload: { chiefComplaint: string; evolution?: string; diagnosisSummary: string; treatmentPlan: string; recommendations?: string }) => Promise<void> }) {
   const [form, setForm] = useState({ chiefComplaint: consultation.chiefComplaint, evolution: consultation.evolution ?? '', diagnosisSummary: '', treatmentPlan: '', recommendations: consultation.recommendations ?? '' })
   const [saving, setSaving] = useState(false)
   const submit = async (event: FormEvent<HTMLFormElement>) => { event.preventDefault(); setSaving(true); try { await onSave(consultation.id, form) } finally { setSaving(false) } }
+<<<<<<< HEAD
+  return <div className="modal-backdrop" role="presentation" onMouseDown={onClose}><form className="modal" role="dialog" aria-modal="true" aria-labelledby="close-consultation-title" onMouseDown={(event) => event.stopPropagation()} onSubmit={(event) => void submit(event)}><div className="modal-header"><div><span className="eyebrow">{consultation.consultationCode}</span><h2 id="close-consultation-title">Cerrar consulta</h2></div><button type="button" className="close-button" title="Cerrar" aria-label="Cerrar" onClick={onClose}><X aria-hidden="true" /></button></div><div className="form-grid"><label className="form-span-two">Motivo de consulta<input required value={form.chiefComplaint} onChange={(event) => setForm((current) => ({ ...current, chiefComplaint: event.target.value }))} /></label><label className="form-span-two">Evolución<textarea value={form.evolution} onChange={(event) => setForm((current) => ({ ...current, evolution: event.target.value }))} /></label><label className="form-span-two">Diagnóstico<input required value={form.diagnosisSummary} onChange={(event) => setForm((current) => ({ ...current, diagnosisSummary: event.target.value }))} /></label><label className="form-span-two">Plan de tratamiento<textarea required value={form.treatmentPlan} onChange={(event) => setForm((current) => ({ ...current, treatmentPlan: event.target.value }))} /></label><label className="form-span-two">Recomendaciones<textarea value={form.recommendations} onChange={(event) => setForm((current) => ({ ...current, recommendations: event.target.value }))} /></label></div><div className="modal-footer"><button type="button" className="button button-secondary" onClick={onClose}>Cancelar</button><button type="submit" className="button button-primary" disabled={saving}>{saving ? 'Cerrando...' : 'Cerrar consulta'}</button></div></form></div>
+=======
   return <div className="modal-backdrop" role="presentation" onMouseDown={onClose}><form className="modal" role="dialog" aria-modal="true" aria-labelledby="close-consultation-title" onMouseDown={(event) => event.stopPropagation()} onSubmit={(event) => void submit(event)}><div className="modal-header"><div><span className="eyebrow">{consultation.consultationCode}</span><h2 id="close-consultation-title">Cerrar consulta</h2></div><button type="button" className="close-button" aria-label="Cerrar" onClick={onClose}>×</button></div><div className="form-grid"><label className="form-span-two">Motivo de consulta<input required value={form.chiefComplaint} onChange={(event) => setForm((current) => ({ ...current, chiefComplaint: event.target.value }))} /></label><label className="form-span-two">Evolución<textarea value={form.evolution} onChange={(event) => setForm((current) => ({ ...current, evolution: event.target.value }))} /></label><label className="form-span-two">Diagnóstico<input required value={form.diagnosisSummary} onChange={(event) => setForm((current) => ({ ...current, diagnosisSummary: event.target.value }))} /></label><label className="form-span-two">Plan de tratamiento<textarea required value={form.treatmentPlan} onChange={(event) => setForm((current) => ({ ...current, treatmentPlan: event.target.value }))} /></label><label className="form-span-two">Recomendaciones<textarea value={form.recommendations} onChange={(event) => setForm((current) => ({ ...current, recommendations: event.target.value }))} /></label></div><div className="modal-footer"><button type="button" className="button button-secondary" onClick={onClose}>Cancelar</button><button type="submit" className="button button-primary" disabled={saving}>{saving ? 'Cerrando...' : 'Cerrar consulta'}</button></div></form></div>
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
 }
 
 type AppointmentForm = { patientId: string; specialtyId: string; professionalId: string; date: string; time: string; reason: string }
 
 function AppointmentModal({ patients, specialties, professionals, onClose, onSave }: { patients: Patient[]; specialties: Specialty[]; professionals: Professional[]; onClose: () => void; onSave: (payload: AppointmentForm) => Promise<void> }) {
   const [form, setForm] = useState<AppointmentForm>({ patientId: patients[0]?.id ?? '', specialtyId: specialties[0]?.id ?? '', professionalId: professionals[0]?.id ?? '', date: toDateInput(new Date()), time: nextHalfHour(), reason: '' })
+<<<<<<< HEAD
+  const [availableProfessionals, setAvailableProfessionals] = useState(professionals)
+  const [loadingProfessionals, setLoadingProfessionals] = useState(false)
+  const [referenceError, setReferenceError] = useState('')
+  const [saving, setSaving] = useState(false)
+  const update = <K extends keyof AppointmentForm>(key: K, value: AppointmentForm[K]) => setForm((current) => ({ ...current, [key]: value }))
+  const canSave = Boolean(form.patientId && form.specialtyId && form.professionalId && form.date >= toDateInput(new Date()) && form.time)
+
+  useEffect(() => {
+    if (!form.specialtyId) return
+    let active = true
+    setLoadingProfessionals(true)
+    setReferenceError('')
+    api.getProfessionals(form.specialtyId).then((items) => {
+      if (!active) return
+      setAvailableProfessionals(items)
+      setForm((current) => ({ ...current, professionalId: items.some((item) => item.id === current.professionalId) ? current.professionalId : items[0]?.id ?? '' }))
+    }).catch((reason) => {
+      if (active) setReferenceError(getErrorMessage(reason))
+    }).finally(() => {
+      if (active) setLoadingProfessionals(false)
+    })
+    return () => { active = false }
+  }, [form.specialtyId])
+=======
   const [saving, setSaving] = useState(false)
   const update = <K extends keyof AppointmentForm>(key: K, value: AppointmentForm[K]) => setForm((current) => ({ ...current, [key]: value }))
   const canSave = Boolean(form.patientId && form.specialtyId && form.professionalId && form.date && form.time)
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
 
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -687,23 +825,69 @@ function AppointmentModal({ patients, specialties, professionals, onClose, onSav
     try { await onSave(form) } finally { setSaving(false) }
   }
 
+<<<<<<< HEAD
+  return <div className="modal-backdrop" role="presentation" onMouseDown={onClose}><form className="modal" role="dialog" aria-modal="true" aria-labelledby="appointment-title" onMouseDown={(event) => event.stopPropagation()} onSubmit={(event) => void submit(event)}><div className="modal-header"><div><span className="eyebrow">Agenda</span><h2 id="appointment-title">Nueva cita</h2></div><button type="button" className="close-button" title="Cerrar" aria-label="Cerrar" onClick={onClose}><X aria-hidden="true" /></button></div><div className="form-grid"><label>Paciente<select required value={form.patientId} onChange={(event) => update('patientId', event.target.value)}><option value="" disabled>Seleccionar paciente</option>{patients.map((patient) => <option value={patient.id} key={patient.id}>{patient.name} · {patient.code}</option>)}</select></label><label>Especialidad<select required value={form.specialtyId} onChange={(event) => update('specialtyId', event.target.value)}><option value="" disabled>Seleccionar especialidad</option>{specialties.map((specialty) => <option value={specialty.id} key={specialty.id}>{specialty.name}</option>)}</select></label><label>Profesional<select required disabled={loadingProfessionals || availableProfessionals.length === 0} value={form.professionalId} onChange={(event) => update('professionalId', event.target.value)}><option value="" disabled>{loadingProfessionals ? 'Consultando disponibilidad...' : 'Seleccionar profesional'}</option>{availableProfessionals.map((professional) => <option value={professional.id} key={professional.id}>{professional.displayName}</option>)}</select></label><label>Fecha<input required min={toDateInput(new Date())} type="date" value={form.date} onChange={(event) => update('date', event.target.value)} /></label><label>Hora<input required type="time" value={form.time} onChange={(event) => update('time', event.target.value)} /></label><label>Motivo <span className="optional-label">Opcional</span><input value={form.reason} onChange={(event) => update('reason', event.target.value)} placeholder="Consulta de seguimiento" /></label></div>{referenceError && <p className="modal-error">{referenceError}</p>}{(!patients.length || !specialties.length || (!loadingProfessionals && !availableProfessionals.length)) && <p className="modal-error">Para crear una cita se necesita al menos un paciente, una especialidad y un profesional habilitado para esa especialidad.</p>}<div className="modal-footer"><button type="button" className="button button-secondary" onClick={onClose}>Cancelar</button><button type="submit" className="button button-primary" disabled={!canSave || saving || loadingProfessionals}>{saving ? 'Guardando...' : 'Confirmar cita'}</button></div></form></div>
+=======
   return <div className="modal-backdrop" role="presentation" onMouseDown={onClose}><form className="modal" role="dialog" aria-modal="true" aria-labelledby="appointment-title" onMouseDown={(event) => event.stopPropagation()} onSubmit={(event) => void submit(event)}><div className="modal-header"><div><span className="eyebrow">Agenda</span><h2 id="appointment-title">Nueva cita</h2></div><button type="button" className="close-button" aria-label="Cerrar" onClick={onClose}>×</button></div><div className="form-grid"><label>Paciente<select value={form.patientId} onChange={(event) => update('patientId', event.target.value)}>{patients.map((patient) => <option value={patient.id} key={patient.id}>{patient.name} · {patient.code}</option>)}</select></label><label>Especialidad<select value={form.specialtyId} onChange={(event) => update('specialtyId', event.target.value)}>{specialties.map((specialty) => <option value={specialty.id} key={specialty.id}>{specialty.name}</option>)}</select></label><label>Profesional<select value={form.professionalId} onChange={(event) => update('professionalId', event.target.value)}>{professionals.map((professional) => <option value={professional.id} key={professional.id}>{professional.displayName}</option>)}</select></label><label>Fecha<input type="date" value={form.date} onChange={(event) => update('date', event.target.value)} /></label><label>Hora<input type="time" value={form.time} onChange={(event) => update('time', event.target.value)} /></label><label>Motivo<input value={form.reason} onChange={(event) => update('reason', event.target.value)} placeholder="Consulta de seguimiento" /></label></div>{(!patients.length || !specialties.length || !professionals.length) && <p className="modal-error">Para crear una cita se necesita al menos un paciente, una especialidad y un profesional registrados.</p>}<div className="modal-footer"><button type="button" className="button button-secondary" onClick={onClose}>Cancelar</button><button type="submit" className="button button-primary" disabled={!canSave || saving}>{saving ? 'Guardando...' : 'Confirmar cita'}</button></div></form></div>
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
 }
 
 function PatientModal({ onClose, onSave }: { onClose: () => void; onSave: (payload: PatientCreateRequest) => Promise<void> }) {
   const [form, setForm] = useState<PatientCreateRequest>({ documentType: 'CI', firstName: '', lastName: '', birthDate: '', sex: 'NOT_DECLARED', documentNumber: '', phone: '', email: '', address: '' })
   const [saving, setSaving] = useState(false)
+<<<<<<< HEAD
+  const [checkingDuplicates, setCheckingDuplicates] = useState(false)
+  const [duplicates, setDuplicates] = useState<ApiPatient[]>([])
+  const [error, setError] = useState('')
+  const update = <K extends keyof PatientCreateRequest>(key: K, value: PatientCreateRequest[K]) => {
+    setDuplicates([])
+    setError('')
+    setForm((current) => ({ ...current, [key]: value }))
+  }
+  const canSave = Boolean(form.firstName.trim() && form.lastName.trim() && form.birthDate && form.birthDate <= toDateInput(new Date()) && (form.documentType === 'NONE' || form.documentNumber?.trim()))
+
+  const payload = () => ({ ...form, documentNumber: form.documentType === 'NONE' ? undefined : form.documentNumber || undefined, phone: form.phone || undefined, email: form.email || undefined, address: form.address || undefined })
+=======
   const update = <K extends keyof PatientCreateRequest>(key: K, value: PatientCreateRequest[K]) => setForm((current) => ({ ...current, [key]: value }))
   const canSave = Boolean(form.firstName.trim() && form.lastName.trim() && form.birthDate)
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
 
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (!canSave) return
+<<<<<<< HEAD
+    setCheckingDuplicates(true)
+    setError('')
+    try {
+      const matches = await api.findPatientDuplicates({ documentNumber: form.documentNumber, firstName: form.firstName, lastName: form.lastName, birthDate: form.birthDate })
+      if (matches.length > 0) {
+        setDuplicates(matches)
+        return
+      }
+      setSaving(true)
+      await onSave(payload())
+    } catch (reason) {
+      setError(getErrorMessage(reason))
+    } finally {
+      setCheckingDuplicates(false)
+      setSaving(false)
+    }
+  }
+
+  const registerDespiteMatches = async () => {
+    setSaving(true)
+    setError('')
+    try { await onSave(payload()) } catch (reason) { setError(getErrorMessage(reason)) } finally { setSaving(false) }
+  }
+
+  return <div className="modal-backdrop" role="presentation" onMouseDown={onClose}><form className="modal patient-modal" role="dialog" aria-modal="true" aria-labelledby="patient-title" onMouseDown={(event) => event.stopPropagation()} onSubmit={(event) => void submit(event)}><div className="modal-header"><div><span className="eyebrow">Admisión y registro</span><h2 id="patient-title">Registrar paciente</h2></div><button type="button" className="close-button" title="Cerrar" aria-label="Cerrar" onClick={onClose}><X aria-hidden="true" /></button></div>{duplicates.length === 0 ? <><div className="form-grid"><label>Tipo de documento<select value={form.documentType} onChange={(event) => update('documentType', event.target.value as PatientCreateRequest['documentType'])}><option value="CI">Cédula de identidad</option><option value="PASSPORT">Pasaporte</option><option value="FOREIGN_ID">Documento extranjero</option><option value="NONE">Sin documento</option></select></label><label>Número de documento<input required={form.documentType !== 'NONE'} disabled={form.documentType === 'NONE'} value={form.documentType === 'NONE' ? '' : form.documentNumber} onChange={(event) => update('documentNumber', event.target.value)} /></label><label>Primer nombre<input required value={form.firstName} onChange={(event) => update('firstName', event.target.value)} /></label><label>Apellido paterno<input required value={form.lastName} onChange={(event) => update('lastName', event.target.value)} /></label><label>Fecha de nacimiento<input required max={toDateInput(new Date())} type="date" value={form.birthDate} onChange={(event) => update('birthDate', event.target.value)} /></label><label>Sexo<select value={form.sex} onChange={(event) => update('sex', event.target.value as PatientCreateRequest['sex'])}><option value="NOT_DECLARED">No declarado</option><option value="FEMALE">Femenino</option><option value="MALE">Masculino</option><option value="INTERSEX">Intersexual</option><option value="UNKNOWN">Desconocido</option></select></label><label>Teléfono <span className="optional-label">Opcional</span><input inputMode="tel" value={form.phone} onChange={(event) => update('phone', event.target.value)} /></label><label>Correo electrónico <span className="optional-label">Opcional</span><input type="email" value={form.email} onChange={(event) => update('email', event.target.value)} /></label><label className="form-span-two">Dirección <span className="optional-label">Opcional</span><input value={form.address} onChange={(event) => update('address', event.target.value)} /></label></div>{error && <p className="modal-error" role="alert">{error}</p>}<div className="modal-footer"><button type="button" className="button button-secondary" onClick={onClose}>Cancelar</button><button type="submit" className="button button-primary" disabled={!canSave || saving || checkingDuplicates}>{checkingDuplicates ? 'Buscando coincidencias...' : saving ? 'Guardando...' : 'Revisar y registrar'}</button></div></> : <><div className="duplicate-review" role="alert"><header><AlertTriangle aria-hidden="true" /><div><strong>Encontramos {duplicates.length} {duplicates.length === 1 ? 'posible coincidencia' : 'posibles coincidencias'}</strong><span>Compara los datos antes de crear otra ficha.</span></div></header><div className="duplicate-list">{duplicates.map((patient) => <div key={patient.id}><span className="avatar avatar-amber">{initials(patient.fullName)}</span><span><strong>{patient.fullName}</strong><small>{patient.patientCode} · {patient.documentNumber || 'Sin documento'} · Nac. {formatShortDate(patient.birthDate)}</small></span></div>)}</div><p>Registrar de todas formas puede crear una ficha duplicada. La API volverá a validar las restricciones antes de guardar.</p></div>{error && <p className="modal-error" role="alert">{error}</p>}<div className="modal-footer duplicate-footer"><button type="button" className="button button-secondary" disabled={saving} onClick={() => setDuplicates([])}>Corregir datos</button><button type="button" className="button button-danger" disabled={saving} onClick={() => void registerDespiteMatches()}>{saving ? 'Registrando...' : 'Registrar de todas formas'}</button></div></>}</form></div>
+=======
     setSaving(true)
     try { await onSave({ ...form, documentNumber: form.documentNumber || undefined, phone: form.phone || undefined, email: form.email || undefined, address: form.address || undefined }) } finally { setSaving(false) }
   }
 
   return <div className="modal-backdrop" role="presentation" onMouseDown={onClose}><form className="modal" role="dialog" aria-modal="true" aria-labelledby="patient-title" onMouseDown={(event) => event.stopPropagation()} onSubmit={(event) => void submit(event)}><div className="modal-header"><div><span className="eyebrow">Admisión y registro</span><h2 id="patient-title">Registrar paciente</h2></div><button type="button" className="close-button" aria-label="Cerrar" onClick={onClose}>×</button></div><div className="form-grid"><label>Tipo de documento<select value={form.documentType} onChange={(event) => update('documentType', event.target.value as PatientCreateRequest['documentType'])}><option value="CI">Cédula de identidad</option><option value="PASSPORT">Pasaporte</option><option value="FOREIGN_ID">Documento extranjero</option><option value="NONE">Sin documento</option></select></label><label>Número de documento<input value={form.documentNumber} onChange={(event) => update('documentNumber', event.target.value)} /></label><label>Primer nombre<input required value={form.firstName} onChange={(event) => update('firstName', event.target.value)} /></label><label>Apellido paterno<input required value={form.lastName} onChange={(event) => update('lastName', event.target.value)} /></label><label>Fecha de nacimiento<input required type="date" value={form.birthDate} onChange={(event) => update('birthDate', event.target.value)} /></label><label>Sexo<select value={form.sex} onChange={(event) => update('sex', event.target.value as PatientCreateRequest['sex'])}><option value="NOT_DECLARED">No declarado</option><option value="FEMALE">Femenino</option><option value="MALE">Masculino</option><option value="INTERSEX">Intersexual</option><option value="UNKNOWN">Desconocido</option></select></label><label>Teléfono<input value={form.phone} onChange={(event) => update('phone', event.target.value)} /></label><label>Correo electrónico<input type="email" value={form.email} onChange={(event) => update('email', event.target.value)} /></label><label className="form-span-two">Dirección<input value={form.address} onChange={(event) => update('address', event.target.value)} /></label></div><div className="modal-footer"><button type="button" className="button button-secondary" onClick={onClose}>Cancelar</button><button type="submit" className="button button-primary" disabled={!canSave || saving}>{saving ? 'Guardando...' : 'Registrar paciente'}</button></div></form></div>
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
 }
 
 function LoadingRow({ colSpan }: { colSpan: number }) {
@@ -827,7 +1011,12 @@ function formatDate(date: Date) {
 }
 
 function formatShortDate(value: string) {
+<<<<<<< HEAD
+  const normalized = /^\d{4}-\d{2}-\d{2}$/.test(value) ? `${value}T00:00:00` : value
+  return new Intl.DateTimeFormat('es-BO', { day: '2-digit', month: 'short' }).format(new Date(normalized))
+=======
   return new Intl.DateTimeFormat('es-BO', { day: '2-digit', month: 'short' }).format(new Date(value))
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
 }
 
 function formatTime(value: string) {
