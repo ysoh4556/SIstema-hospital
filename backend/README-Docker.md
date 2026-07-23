@@ -7,6 +7,7 @@ Esta configuracion levanta PostgreSQL en Docker y conserva la base de datos en e
 Desde la carpeta `backend`:
 
 ```bash
+<<<<<<< HEAD
 lan de Implementación: Frontend Realista para SIIH
 🔍 Análisis del Estado Actual
 ✅ Funcionalidades Conectadas al Backend
@@ -299,6 +300,9 @@ El frontend será considerado "realista" cuando:
 5. ✅ Botones/acciones ocultos según permisos
 6. ✅ Dashboard con métricas reales
 7. ✅ Flujo completo: Login → Paciente → Cita → Consulta → Orden/Receta → Resultado/Dispensación → Factura
+=======
+docker compose up -d postgres
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
 ```
 
 La aplicacion Spring puede conectarse con el perfil local:

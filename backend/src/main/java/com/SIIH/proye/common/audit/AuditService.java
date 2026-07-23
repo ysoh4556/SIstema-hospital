@@ -1,15 +1,21 @@
 package com.SIIH.proye.common.audit;
 
+<<<<<<< HEAD
 import com.SIIH.proye.security.AuthenticatedUser;
+=======
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
 import tools.jackson.core.JacksonException;
 import tools.jackson.databind.json.JsonMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+<<<<<<< HEAD
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+=======
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
 
 import java.sql.PreparedStatement;
 import java.sql.Types;
@@ -33,7 +39,10 @@ public class AuditService {
                        UUID userId, Map<String, Object> beforeData,
                        Map<String, Object> afterData) {
         try {
+<<<<<<< HEAD
             UUID effectiveUserId = userId != null ? userId : currentUserId();
+=======
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
             String beforeJson = beforeData == null ? null : objectMapper.writeValueAsString(beforeData);
             String afterJson = afterData == null ? null : objectMapper.writeValueAsString(afterData);
             jdbcTemplate.update(connection -> {
@@ -41,7 +50,11 @@ public class AuditService {
                         INSERT INTO audit_event (user_id, action, entity_type, entity_id, origin, success, before_data, after_data)
                         VALUES (?, ?, ?, ?, ?, TRUE, ?::jsonb, ?::jsonb)
                         """);
+<<<<<<< HEAD
                 statement.setObject(1, effectiveUserId);
+=======
+                statement.setObject(1, userId);
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
                 statement.setString(2, action);
                 statement.setString(3, entityType);
                 statement.setObject(4, entityId);
@@ -54,6 +67,7 @@ public class AuditService {
             log.warn("No se pudo serializar la auditoria de {} {}", entityType, entityId, exception);
         }
     }
+<<<<<<< HEAD
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void recordFailure(String action, String entityType, UUID entityId, UUID userId, String reason) {
@@ -68,4 +82,6 @@ public class AuditService {
         return authentication != null && authentication.getPrincipal() instanceof AuthenticatedUser user
                 ? user.id() : null;
     }
+=======
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
 }

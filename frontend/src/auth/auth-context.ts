@@ -16,7 +16,11 @@ export type LoginResult = { ok: true } | { ok: false; message: string }
 export type AuthContextValue = {
   user: AuthUser | null
   login: (username: string, password: string, remember: boolean) => Promise<LoginResult>
+<<<<<<< HEAD
   logout: () => Promise<void>
+=======
+  logout: () => void
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
   hasPermission: (permission: Permission) => boolean
 }
 

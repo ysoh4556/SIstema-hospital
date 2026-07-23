@@ -2,7 +2,10 @@ package com.SIIH.proye.common.api;
 
 import com.SIIH.proye.common.exception.ConflictException;
 import com.SIIH.proye.common.exception.ResourceNotFoundException;
+<<<<<<< HEAD
 import com.SIIH.proye.common.exception.UnauthorizedException;
+=======
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -20,11 +23,14 @@ import java.util.UUID;
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
+<<<<<<< HEAD
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<ApiError> handleUnauthorized(UnauthorizedException exception) {
         return response(HttpStatus.UNAUTHORIZED, "UNAUTHORIZED", exception.getMessage(), Map.of());
     }
 
+=======
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ApiError> handleNotFound(ResourceNotFoundException exception) {
         return response(HttpStatus.NOT_FOUND, "RESOURCE_NOT_FOUND", exception.getMessage(), Map.of());

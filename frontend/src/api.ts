@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { clearStoredSession, dispatchSessionEvent, readStoredSession, SESSION_EXPIRED_EVENT, SESSION_UPDATED_EVENT, writeStoredSession } from './auth/session'
 import type { AuthUser } from './auth/auth-context'
 
@@ -23,6 +24,10 @@ export type AuthResponse = {
   user: AuthUserResponse
 }
 
+=======
+const API_BASE_URL = (import.meta.env.VITE_API_URL ?? 'http://localhost:8080/api/v1').replace(/\/$/, '')
+
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
 export type PageResponse<T> = {
   content: T[]
   page: number
@@ -220,6 +225,7 @@ export type AdministrationOverview = {
   audit: Array<{ id: string; action: string; entityType: string; success: boolean; eventAt: string; username: string | null }>
 }
 
+<<<<<<< HEAD
 export type Triage = {
   id: string
   encounterId: string
@@ -290,6 +296,8 @@ export type AuditEvent = { id: string; userId: string | null; username: string |
 export type ProfessionalRegistryItem = { id: string; userId: string; username: string; displayName: string; professionalCode: string; licenseNumber: string | null; professionalType: string; status: string; specialties: string[] }
 export type Notification = { id: string; channel: string; templateCode: string; message: string; status: string; createdAt: string; sentAt: string | null; readAt: string | null }
 
+=======
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
 export class ApiError extends Error {
   readonly status: number
   readonly code?: string
@@ -302,11 +310,16 @@ export class ApiError extends Error {
   }
 }
 
+<<<<<<< HEAD
 let refreshRequest: Promise<boolean> | null = null
 
 async function request<T>(path: string, options: RequestInit = {}, retryAfterRefresh = true): Promise<T> {
   let response: Response
   const session = readStoredSession()
+=======
+async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
+  let response: Response
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
 
   try {
     response = await fetch(`${API_BASE_URL}${path}`, {
@@ -314,7 +327,10 @@ async function request<T>(path: string, options: RequestInit = {}, retryAfterRef
       headers: {
         Accept: 'application/json',
         ...(options.body ? { 'Content-Type': 'application/json' } : {}),
+<<<<<<< HEAD
         ...(session?.accessToken ? { Authorization: `Bearer ${session.accessToken}` } : {}),
+=======
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
         ...options.headers,
       },
     })
@@ -322,11 +338,14 @@ async function request<T>(path: string, options: RequestInit = {}, retryAfterRef
     throw new ApiError('No se pudo conectar con el backend.', 0)
   }
 
+<<<<<<< HEAD
   if (response.status === 401 && retryAfterRefresh && !path.startsWith('/auth/')) {
     const refreshed = await refreshSession()
     if (refreshed) return request<T>(path, options, false)
   }
 
+=======
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
   const body = await response.text()
   let payload: { message?: string; code?: string } | undefined
   if (body) {
@@ -344,6 +363,7 @@ async function request<T>(path: string, options: RequestInit = {}, retryAfterRef
   return body ? JSON.parse(body) as T : (undefined as T)
 }
 
+<<<<<<< HEAD
 async function refreshSession() {
   if (refreshRequest) return refreshRequest
   refreshRequest = doRefreshSession().finally(() => { refreshRequest = null })
@@ -371,6 +391,8 @@ async function doRefreshSession() {
   }
 }
 
+=======
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
 function queryString(parameters: Record<string, string | number | undefined>) {
   const query = new URLSearchParams()
   Object.entries(parameters).forEach(([key, value]) => {
@@ -381,6 +403,7 @@ function queryString(parameters: Record<string, string | number | undefined>) {
 }
 
 export const api = {
+<<<<<<< HEAD
   login(username: string, password: string, remember: boolean) {
     return request<AuthResponse>('/auth/login', {
       method: 'POST',
@@ -406,6 +429,8 @@ export const api = {
     })
   },
 
+=======
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
   getPatients(search = '', page = 0, size = 20) {
     return request<PageResponse<Patient>>(`/patients${queryString({ search, page, size, sort: 'lastName' })}`)
   },
@@ -436,8 +461,13 @@ export const api = {
     return request<Specialty[]>('/specialties')
   },
 
+<<<<<<< HEAD
   getProfessionals(specialtyId?: string) {
     return request<Professional[]>(`/professionals${queryString({ specialtyId })}`)
+=======
+  getProfessionals() {
+    return request<Professional[]>('/professionals')
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
   },
 
   getAppointments(page = 0, size = 50, filters: { from?: string; to?: string; status?: AppointmentStatus } = {}) {
@@ -495,6 +525,7 @@ export const api = {
     })
   },
 
+<<<<<<< HEAD
   getTriage(patientId?: string) {
     return request<Triage[]>(`/triage${queryString({ patientId })}`)
   },
@@ -683,6 +714,8 @@ export const api = {
     return request<Notification>(`/notifications/${id}/read`, { method: 'PATCH' })
   },
 
+=======
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
   getLaboratoryOverview() {
     return request<LaboratoryOverview>('/laboratory/overview')
   },

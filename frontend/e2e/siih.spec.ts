@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { expect, test, type Page, type Route } from '@playwright/test'
 
 const allPermissions = [
@@ -15,10 +16,18 @@ const receptionPermissions = [
 
 test('presenta la landing y dirige al acceso', async ({ page }) => {
   await page.goto('/')
+=======
+import { expect, test } from '@playwright/test'
+
+test('presenta la landing y dirige al acceso', async ({ page }) => {
+  await page.goto('/')
+
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
   await expect(page.getByRole('heading', { name: 'Sistema Integrado de Información Hospitalaria' })).toBeVisible()
   await expect(page.getByRole('link', { name: /Ingresar al sistema/ })).toBeVisible()
   await expect(page.locator('.landing-hero')).toHaveCSS('background-image', /siih-hero/)
   await expect(page.locator('body')).toHaveJSProperty('scrollWidth', await page.locator('body').evaluate((element) => element.clientWidth))
+<<<<<<< HEAD
 })
 
 test('protege el workspace, autentica por API y aplica el rol recepción', async ({ page }) => {
@@ -28,6 +37,15 @@ test('protege el workspace, autentica por API y aplica el rol recepción', async
   await expect(page).toHaveURL(/\/acceso$/)
 
   await page.getByRole('tab', { name: 'Entorno de prueba' }).click()
+=======
+  await page.screenshot({ path: 'test-results/landing-desktop.png', fullPage: true })
+})
+
+test('protege el workspace y aplica el menú del rol recepción', async ({ page }) => {
+  await page.goto('/app/inicio')
+  await expect(page).toHaveURL(/\/acceso$/)
+
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
   await page.getByRole('button', { name: 'Ingresar al sistema' }).click()
   await expect(page).toHaveURL(/\/app\/inicio$/)
   await expect(page.getByText('Andrea Suárez', { exact: true })).toBeVisible()
@@ -35,6 +53,7 @@ test('protege el workspace, autentica por API y aplica el rol recepción', async
   await expect(page.getByRole('button', { name: /Agenda y citas/ })).toBeVisible()
   await expect(page.getByRole('button', { name: /Laboratorio/ })).toHaveCount(0)
   await expect(page.getByRole('button', { name: /Administración/ })).toHaveCount(0)
+<<<<<<< HEAD
   expect(requests).toContain('/api/v1/auth/login')
 })
 
@@ -44,10 +63,21 @@ test('muestra módulos funcionales al administrador sin errores de navegación',
   await installApiMock(page)
   await page.goto('/acceso')
   await page.getByRole('tab', { name: 'Entorno de prueba' }).click()
+=======
+  await page.screenshot({ path: 'test-results/workspace-recepcion.png', fullPage: true })
+})
+
+test('muestra todos los módulos al administrador', async ({ page }) => {
+  const pageErrors: string[] = []
+  page.on('pageerror', (error) => pageErrors.push(error.message))
+  await page.route('**/api/v1/*/overview', async (route) => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ summary: {} }) }))
+  await page.goto('/acceso')
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
   await page.getByLabel('Perfil de demostración').selectOption('admin')
   await page.getByRole('button', { name: 'Ingresar al sistema' }).click()
 
   await expect(page.getByText('Camila Torres', { exact: true })).toBeVisible()
+<<<<<<< HEAD
   const modules = ['Triaje', 'Hospitalización', 'Laboratorio', 'Farmacia', 'Inventario', 'Facturación', 'Reportes', 'Administración']
   for (const module of modules) {
     await page.getByRole('button', { name: module, exact: true }).click()
@@ -136,15 +166,43 @@ test('revisa coincidencias antes de registrar otra ficha de paciente', async ({ 
   await expect(page.getByLabel('Número de documento')).toBeVisible()
 })
 
+=======
+  await expect(page.getByRole('button', { name: /Laboratorio/ })).toBeVisible()
+  await expect(page.getByRole('button', { name: /Hospitalización/ })).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Administración', exact: true })).toBeVisible()
+
+  const modules = [
+    ['Triaje', 'Triaje'],
+    ['Hospitalización', 'Hospitalización'],
+    ['Laboratorio', 'Laboratorio'],
+    ['Farmacia', 'Farmacia'],
+    ['Inventario', 'Inventario'],
+    ['Facturación', 'Facturación'],
+    ['Reportes', 'Reportes'],
+    ['Administración', 'Administración'],
+  ] as const
+  for (const [navigationLabel, heading] of modules) {
+    await page.getByRole('button', { name: navigationLabel, exact: true }).click()
+    await expect(page.getByRole('heading', { name: heading, exact: true, level: 1 })).toBeVisible()
+  }
+  expect(pageErrors).toEqual([])
+})
+
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
 test('mantiene landing y login dentro del viewport móvil', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/')
   await expect(page.getByRole('heading', { name: 'Sistema Integrado de Información Hospitalaria' })).toBeVisible()
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)
+<<<<<<< HEAD
+=======
+  await page.screenshot({ path: 'test-results/landing-mobile.png', fullPage: true })
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
 
   await page.goto('/acceso')
   await expect(page.getByRole('heading', { name: 'Ingresar al SIIH' })).toBeVisible()
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)
+<<<<<<< HEAD
 })
 
 async function installApiMock(page: Page, requests: string[] = [], options: { duplicates?: unknown[] } = {}) {
@@ -232,3 +290,7 @@ function pageResponse(content: unknown[]) {
 function json(route: Route, body: unknown, status = 200) {
   return route.fulfill({ status, contentType: 'application/json', body: JSON.stringify(body) })
 }
+=======
+  await page.screenshot({ path: 'test-results/login-mobile.png', fullPage: true })
+})
+>>>>>>> 2da726a44e5e1079ea0eccff3c60bd33c25b5e06
